@@ -23,7 +23,7 @@ jobs:
         run: |
           go install golang.org/x/mobile/cmd/gomobile@latest
           gomobile init
-          gomobile bind -o libs/hello.aar -androidapi 21 -target android -tags mobile ./libmodule/src/go/mobile/
+          gomobile bind -o hello.aar -androidapi 21 -target android -tags mobile ./libmodule/src/go/mobile/
 
       - name: Upload .aar files
         uses: actions/upload-artifact@v4
