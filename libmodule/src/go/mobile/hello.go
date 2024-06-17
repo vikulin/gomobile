@@ -1,10 +1,10 @@
 package mobile
 
 import "fmt"
-import "github.com/wlynxg/anet"
+import "net"
 
 func Greetings(name string) string {
-    allifaces, err := anet.Interfaces()
+    allifaces, err := net.Interfaces()
     if err != nil {
         return fmt.Sprintf("Error: %s!", err)
     }
