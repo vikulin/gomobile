@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import mobile.Hello;
+import mobile.Mobile;
 
 public class MainActivity extends Activity {
 
@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
         TextView mTextView = findViewById(R.id.mytextview);
 
         // Call Go function.
-        String greetings = Hello.greetings("Android gomobile");
+        String greetings = Mobile.greetings("Android gomobile");
         mTextView.setText(greetings);
     }
 }
