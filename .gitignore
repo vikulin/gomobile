@@ -1,0 +1,10 @@
+.DS_Store
+.externalNativeBuild
+.idea
+/local.properties
+/app/build/
+/build
+/libs/*
+/app/release/*
+/app/debug/*
+/.gradle/

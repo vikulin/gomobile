@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    flatDir {
+        dirs '.'
+    }
+}
+
+android {
+    compileSdkVersion 34
+
+    defaultConfig {
+        applicationId "org.golang.example.android"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    namespace 'org.golang.example.bind'
+}
+
+dependencies {
+    implementation files('../libs/hello.aar')
+}
