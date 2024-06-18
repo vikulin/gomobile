@@ -9,6 +9,7 @@ func Greetings(name string) string {
         return fmt.Sprintf("Error: %s!", err)
     }
     s := ""
+    anet.SetAndroidVersion(14)
     for _, iface := range allifaces {
         s += iface.Name
         _, err := anet.InterfaceAddrsByInterface(&iface)
