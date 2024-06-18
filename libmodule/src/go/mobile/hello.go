@@ -10,7 +10,11 @@ func Greetings(name string) string {
     }
     s := ""
     for _, iface := range allifaces {
-        s += iface.Name+"\n"
+        s += iface.Name
+        addrs, err := iface.Addrs()
+        if err != nil {
+            s += err + "\n"
+        }
     }
 	return fmt.Sprintf("Hello, %s!", s)
 }
