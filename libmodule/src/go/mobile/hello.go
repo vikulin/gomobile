@@ -16,5 +16,5 @@ func Greetings(name string) string {
             s += fmt.Sprintf("Error: %s", err) + "\n"
         }
     }
-	return fmt.Sprintf("Hello, %s!", s)
+    return fmt.Sprintf("Hello, %s!", s)
 }
