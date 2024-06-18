@@ -12,7 +12,7 @@ func Greetings(name string) string {
     anet.SetAndroidVersion(14)
     for _, iface := range allifaces {
         s += iface.Name
-        _, err := anet.InterfaceAddrsByInterface(iface)
+        _, err := anet.InterfaceAddrsByInterface(&iface)
         if err != nil {
             s += fmt.Sprintf("Error: %s", err) + "\n"
         }
