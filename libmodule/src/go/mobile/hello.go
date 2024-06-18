@@ -11,7 +11,7 @@ func Greetings(name string) string {
     s := ""
     for _, iface := range allifaces {
         s += iface.Name
-        _, err := iface.Addrs()
+        _, err := anet.InterfaceAddrsByInterface(&iface)
         if err != nil {
             s += fmt.Sprintf("Error: %s", err) + "\n"
         }
