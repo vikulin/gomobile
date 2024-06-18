@@ -11,9 +11,9 @@ func Greetings(name string) string {
     s := ""
     for _, iface := range allifaces {
         s += iface.Name
-        addrs, err := iface.Addrs()
+        _, err := iface.Addrs()
         if err != nil {
-            s += err + "\n"
+            s += fmt.Sprintf("Error: %s", err) + "\n"
         }
     }
 	return fmt.Sprintf("Hello, %s!", s)
