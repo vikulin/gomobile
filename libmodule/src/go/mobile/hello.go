@@ -30,7 +30,7 @@ func Greetings(name string) string {
             if !addrIP.IsLinkLocalUnicast() {
                 continue
             }
-            _, err = net.Listen("tcp", fmt.Sprintf("[%s]:0", addrIP))
+            _, err = net.Listen("tcp", fmt.Sprintf("[%s]:48000", addrIP))
             if err != nil {
                 s += fmt.Sprintf("Listen error: %s", err) + "\n"
             }
