@@ -20,10 +20,20 @@ func Greetings(name string) string {
         } else {
             s += fmt.Sprintf("%s \n", addrs)
         }
-
-        _, err = net.Listen("tcp", fmt.Sprintf("%s:0", addrs))
-        if err != nil {
-            s += fmt.Sprintf("Listen error: %s", err) + "\n"
+        for _, addr := range addrs {
+            addrIP, _, _ := net.ParseCIDR(addr.String())
+            // Ignore IPv4 addresses
+            if addrIP.To4() != nil {
+                continue
+            }
+            // Ignore non-link-local addresses
+            if !addrIP.IsLinkLocalUnicast() {
+                continue
+            }
+            _, err = net.Listen("tcp", fmt.Sprintf("[%s]:0", addrIP))
+            if err != nil {
+                s += fmt.Sprintf("Listen error: %s", err) + "\n"
+            }
         }
     }
     return fmt.Sprintf("Hello, %s!", s)
