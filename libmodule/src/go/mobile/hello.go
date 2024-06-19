@@ -21,7 +21,7 @@ func Greetings(name string) string {
             s += fmt.Sprintf("%s \n", addrs)
         }
 
-        _, err := net.Listen("tcp", fmt.Sprintf("%s:0", addrs))
+        _, err = net.Listen("tcp", fmt.Sprintf("%s:0", addrs))
         if err != nil {
             s += fmt.Sprintf("Listen error: %s", err) + "\n"
         }
