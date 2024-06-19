@@ -1,5 +1,6 @@
 package mobile
 
+import "net"
 import "fmt"
 import "github.com/wlynxg/anet"
 
@@ -18,6 +19,11 @@ func Greetings(name string) string {
             s += fmt.Sprintf("Error: %s", err) + "\n"
         } else {
             s += fmt.Sprintf("%s \n", addrs)
+        }
+
+        _, err := net.Listen("tcp", fmt.Sprintf("%s:0", addrs))
+        if err != nil {
+            s += fmt.Sprintf("Listen error: %s", err) + "\n"
         }
     }
     return fmt.Sprintf("Hello, %s!", s)
