@@ -1,40 +1,48 @@
 package mobile
 
-import "net"
-import "fmt"
-import "github.com/wlynxg/anet"
+import (
+	"fmt"
+	"log"
+	"net"
+	"net/netip"
+
+	"github.com/wlynxg/anet"
+)
 
 func Greetings(name string) string {
-    anet.SetAndroidVersion(14)
-    allifaces, err := anet.Interfaces()
-    if err != nil {
-        return fmt.Sprintf("Error: %s!", err)
-    }
-    s := ""
-    
-    for _, iface := range allifaces {
-        s += iface.Name
-        addrs, err := anet.InterfaceAddrsByInterface(&iface)
-        if err != nil {
-            s += fmt.Sprintf("Error: %s", err) + "\n"
-        } else {
-            s += fmt.Sprintf("%s \n", addrs)
-        }
-        for _, addr := range addrs {
-            addrIP, _, _ := net.ParseCIDR(addr.String())
-            // Ignore IPv4 addresses
-            if addrIP.To4() != nil {
-                continue
-            }
-            // Ignore non-link-local addresses
-            if !addrIP.IsLinkLocalUnicast() {
-                continue
-            }
-            _, err = net.Listen("tcp6", fmt.Sprintf("[%s%%%s]:0", addrIP, iface.Name))
-            if err != nil {
-                s += fmt.Sprintf("Listen error: %s", err) + "\n"
-            }
-        }
-    }
-    return fmt.Sprintf("Hello, %s!", s)
+	anet.SetAndroidVersion(14)
+	allifaces, err := anet.Interfaces()
+	if err != nil {
+		return fmt.Sprintf("Error: %s!", err)
+	}
+	s := ""
+
+	for _, iface := range allifaces {
+		s += iface.Name
+		addrs, err := anet.InterfaceAddrsByInterface(&iface)
+		if err != nil {
+			s += fmt.Sprintf("Error: %s", err) + "\n"
+		} else {
+			s += fmt.Sprintf("%s \n", addrs)
+		}
+
+		for _, addr := range addrs {
+			parseAddr, err := netip.ParsePrefix(addr.String())
+			if err != nil {
+				continue
+			}
+
+			if parseAddr.Addr().Is4() || parseAddr.Addr().IsMulticast() {
+				continue
+			}
+
+			addr := fmt.Sprintf("[%s%%%s]:0", parseAddr.Addr().String(), iface.Name)
+
+			_, err = net.Listen("tcp", addr)
+			if err != nil {
+				log.Printf("listen %s error: %s", addr, err)
+			}
+		}
+	}
+	return fmt.Sprintf("Hello, %s!", s)
 }
