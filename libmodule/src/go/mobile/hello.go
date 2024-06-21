@@ -44,7 +44,7 @@ func Greetings(name string) string {
 			}
 			dialer := &net.Dialer{}
 			dialer.LocalAddr = &net.TCPAddr{
-				IP:   parseAddr.To4(),
+				IP:   parseAddr.To6(),
 				Port: 0,
 				Zone: iface.Name,
 			}
