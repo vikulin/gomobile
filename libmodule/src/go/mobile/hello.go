@@ -36,7 +36,7 @@ func Greetings(name string) string {
 				continue
 			}
 
-			addr := fmt.Sprintf("[%s%%%s]:0", parseAddr.Addr().String(), iface.Name)
+			addr := fmt.Sprintf("[%s%%%s]:51234", parseAddr.Addr().String(), iface.Name)
 
 			_, err = net.Listen("tcp", addr)
 			if err != nil {
