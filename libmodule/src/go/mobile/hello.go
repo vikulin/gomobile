@@ -42,6 +42,17 @@ func Greetings(name string) string {
 			if err != nil {
 				log.Printf("listen %s error: %s", addr, err)
 			}
+			dialer := &net.Dialer{}
+			dialer.LocalAddr = &net.TCPAddr{
+				IP:   parseAddr.Addr(),
+				Port: 0,
+				Zone: iface.Name,
+			}
+
+			conn, err := dialer.Dial("tcp", addr.String())
+			if err != nil {
+				log.Printf("dial %s error: %s", dialer, err)
+			}
 		}
 	}
 	return fmt.Sprintf("Hello, %s!", s)
