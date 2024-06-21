@@ -43,20 +43,11 @@ func Greetings(name string) string {
 				log.Printf("listen %s error: %s", addr, err)
 				continue
 			}
-			defer l.Close()
 
-			go func(l net.Listener) {
-				for {
-					conn, err := l.Accept()
-					if err != nil {
-						log.Printf("accept error: %s", err)
-						continue
-					}
-					// Handle connection in a new goroutine.
-					go handleConnection(conn)
-				}
-			}(l)
+			// Start accepting connections in a new goroutine
+			go acceptConnections(l)
 
+			// Test the listener by dialing it
 			dialer := &net.Dialer{}
 			addrIP, _, _ := net.ParseCIDR(parseAddr.Addr().String())
 			dialer.LocalAddr = &net.TCPAddr{
@@ -72,6 +63,19 @@ func Greetings(name string) string {
 		}
 	}
 	return fmt.Sprintf("Hello, %s!", s)
+}
+
+func acceptConnections(l net.Listener) {
+	defer l.Close()
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			log.Printf("accept error: %s", err)
+			continue
+		}
+		// Handle connection in a new goroutine.
+		go handleConnection(conn)
+	}
 }
 
 func handleConnection(conn net.Conn) {
