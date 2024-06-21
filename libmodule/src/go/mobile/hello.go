@@ -38,10 +38,25 @@ func Greetings(name string) string {
 
 			addr := fmt.Sprintf("[%s%%%s]:51234", parseAddr.Addr().String(), iface.Name)
 
-			_, err = net.Listen("tcp", addr)
+			l, err := net.Listen("tcp", addr)
 			if err != nil {
 				log.Printf("listen %s error: %s", addr, err)
+				continue
 			}
+			defer l.Close()
+
+			go func(l net.Listener) {
+				for {
+					conn, err := l.Accept()
+					if err != nil {
+						log.Printf("accept error: %s", err)
+						continue
+					}
+					// Handle connection in a new goroutine.
+					go handleConnection(conn)
+				}
+			}(l)
+
 			dialer := &net.Dialer{}
 			addrIP, _, _ := net.ParseCIDR(parseAddr.Addr().String())
 			dialer.LocalAddr = &net.TCPAddr{
@@ -57,4 +72,10 @@ func Greetings(name string) string {
 		}
 	}
 	return fmt.Sprintf("Hello, %s!", s)
+}
+
+func handleConnection(conn net.Conn) {
+	defer conn.Close()
+	// Implement your connection handling logic here
+	log.Printf("Handling connection from %s", conn.RemoteAddr().String())
 }
