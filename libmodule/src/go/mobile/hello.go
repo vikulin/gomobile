@@ -43,13 +43,14 @@ func Greetings(name string) string {
 				log.Printf("listen %s error: %s", addr, err)
 			}
 			dialer := &net.Dialer{}
+			addrIP, _, _ := net.ParseCIDR(addr.String())
 			dialer.LocalAddr = &net.TCPAddr{
-				IP:   parseAddr.To6(),
+				IP:   addrIP.To6(),
 				Port: 0,
 				Zone: iface.Name,
 			}
 
-			_, err := dialer.Dial("tcp", addr)
+			_, err = dialer.Dial("tcp", addr)
 			if err != nil {
 				log.Printf("dial %s error: %s", dialer, err)
 			}
