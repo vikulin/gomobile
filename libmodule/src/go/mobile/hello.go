@@ -43,7 +43,7 @@ func Greetings(name string) string {
 				log.Printf("listen %s error: %s", addr, err)
 			}
 			dialer := &net.Dialer{}
-			addrIP, _, _ := net.ParseCIDR(addr.String())
+			addrIP, _, _ := net.ParseCIDR(parseAddr.Addr().String())
 			dialer.LocalAddr = &net.TCPAddr{
 				IP:   addrIP,
 				Port: 0,
