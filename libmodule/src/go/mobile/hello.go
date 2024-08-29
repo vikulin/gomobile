@@ -6,16 +6,16 @@ import (
 	"net"
 	"net/netip"
 
-	"github.com/wlynxg/anet"
+	"github.com/vikulin/anet"
 )
 
 func Greetings(name string) string {
-	anet.SetAndroidVersion(14)
+
 	allifaces, err := anet.Interfaces()
 	if err != nil {
 		return fmt.Sprintf("Error: %s!", err)
 	}
-	s := ""
+	s := fmt.Sprintf("Android API level %d \n", anet.GetAndroidApiLevel())
 
 	for _, iface := range allifaces {
 		s += iface.Name
