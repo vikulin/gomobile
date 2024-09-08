@@ -6,7 +6,7 @@ import (
 	"net"
 	"net/netip"
 
-	"github.com/vikulin/anet"
+	"github.com/wlynxg/anet"
 )
 
 func Greetings(name string) string {
@@ -15,10 +15,14 @@ func Greetings(name string) string {
 	if err != nil {
 		return fmt.Sprintf("Error: %s!", err)
 	}
-	s := fmt.Sprintf("Android API level %d \n", anet.GetAndroidApiLevel())
-
+    s := ""
 	for _, iface := range allifaces {
+	    s = ""
 		s += iface.Name
+		_, err := net.InterfaceByName(s)
+        if err != nil {
+            log.Printf("net: interface name %s not found, error %s", s, err)
+        }
 		addrs, err := anet.InterfaceAddrsByInterface(&iface)
 		if err != nil {
 			s += fmt.Sprintf("Error: %s", err) + "\n"
